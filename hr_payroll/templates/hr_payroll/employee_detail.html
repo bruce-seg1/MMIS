@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} - MMIS Ghana{% endblock %}
+
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    {% if employee %}
+        <h3>Employee Details</h3>
+        <p><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
+        <p><strong>Full Name:</strong> {{ employee.first_name }} {{ employee.last_name }}</p>
+        <p><strong>Email:</strong> {{ employee.email }}</p>
+        <p><strong>Job Title:</strong> {{ employee.job_title }}</p>
+        <p><strong>Employment Date:</strong> {{ employee.employment_date|date:"F d, Y" }}</p>
+        <p><strong>Date of Birth:</strong> {{ employee.date_of_birth|date:"F d, Y" }}</p>
+        <p><strong>Gender:</strong> {{ employee.get_gender_display }}</p>
+        <p><strong>Contact Number:</strong> {{ employee.contact_number|default:"N/A" }}</p>
+
+        {% if employee.user %}
+            <p><strong>System User Account:</strong> {{ employee.user.username }}</p>
+        {% else %}
+            <p><strong>System User Account:</strong> Not linked</p>
+        {% endif %}
+
+        <hr>
+        <a href="{% url 'hr_payroll:employee-list' %}">Back to Employee List</a>
+        {# Add links for edit/delete if/when those views exist #}
+        {# | <a href="#">Edit Employee</a> #}
+    {% else %}
+        <p>Employee not found.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} - MMIS Ghana{% endblock %}
+
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<p>Hello, {{ user.username }}!</p>
+<p>Welcome to your MMIS Dashboard. From here you can access various modules and features.</p>
+
+<div class="dashboard-widgets" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+
+    <div class="widget" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; flex-basis: 300px; background-color: #f9f9f9;">
+        <h4>Human Resources</h4>
+        <p>Manage employee records, payroll, and more.</p>
+        <ul>
+            <li><a href="{% url 'hr_payroll:employee-list' %}">View Employees</a></li>
+            {# Add more links as HR features are built #}
+        </ul>
+    </div>
+
+    <div class="widget" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; flex-basis: 300px; background-color: #f9f9f9;">
+        <h4>Finance</h4>
+        <p>Track revenue, manage expenditures, and view financial reports.</p>
+        {# Add links as Finance features are built, e.g., to revenue collection forms, expenditure tracking etc. #}
+        <ul>
+            <li><a href="{% url 'admin:app_list' app_label='finance' %}">Manage Financial Data (Admin)</a></li>
+        </ul>
+    </div>
+
+    <div class="widget" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; flex-basis: 300px; background-color: #f9f9f9;">
+        <h4>Town & Country Planning</h4>
+        <p>Process permits and manage land use applications.</p>
+        <ul>
+            <li><a href="{% url 'admin:app_list' app_label='planning' %}">Manage Planning Data (Admin)</a></li>
+        </ul>
+    </div>
+
+    <div class="widget" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; flex-basis: 300px; background-color: #f9f9f9;">
+        <h4>Births & Deaths Registry</h4>
+        <p>Manage birth and death registrations.</p>
+        <ul>
+            <li><a href="{% url 'admin:app_list' app_label='registry' %}">Manage Registry Data (Admin)</a></li>
+        </ul>
+    </div>
+
+    {% if user.is_staff or user.is_superuser %}
+    <div class="widget" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; flex-basis: 300px; background-color: #f9f9f9;">
+        <h4>Administration</h4>
+        <p>System administration and user management.</p>
+        <ul>
+            <li><a href="{% url 'admin:index' %}">Go to Admin Panel</a></li>
+            {% if user.profile.role == 'ADMIN' or user.is_superuser %}
+            <li><a href="{% url 'admin:auth_user_changelist' %}">Manage Users</a></li>
+            <li><a href="{% url 'admin:general_admin_department_changelist' %}">Manage Departments</a></li>
+            <li><a href="{% url 'admin:general_admin_auditlog_changelist' %}">View Audit Logs</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+
+</div>
+
+<p style="margin-top: 30px;"><a href="{% url 'logout' %}?next={% url 'home' %}">Logout</a></p>
+
+{% endblock %}

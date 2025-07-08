@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MMIS Ghana{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        header { background-color: #004488; color: white; padding: 1em 0; text-align: center; }
+        nav ul { list-style-type: none; padding: 0; text-align: center; background-color: #333; }
+        nav ul li { display: inline; margin-right: 20px; }
+        nav ul li a { color: white; text-decoration: none; padding: 10px 15px; display: inline-block; }
+        nav ul li a:hover { background-color: #555; }
+        .container { margin-top: 20px; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #004488; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #e9e9e9; }
+        .messages { list-style-type: none; padding: 0; margin: 10px 0; }
+        .messages li { padding: 10px; margin-bottom: 10px; border-radius: 3px; }
+        .messages li.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .messages li.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .messages li.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .messages li.warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc; font-size: 0.9em; color: #777; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Municipal Management Information System</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home/Login</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'hr_payroll:employee-list' %}">Employees</a></li>
+                <li><a href="{% url 'admin:index' %}">Admin Panel</a></li>
+                <li><a href="{% url 'logout' %}?next={% url 'home' %}">Logout ({{ user.username }})</a></li>
+            {% else %}
+                {# Login link is implicitly on the home page now, or use: #}
+                {# <li><a href="{% url 'login' %}?next={% url 'dashboard' %}">Login</a></li> #}
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>{% block page_title %}{% endblock %}</h2>
+        {% block content %}
+        <p>Welcome to the MMIS. This is the default content block.</p>
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; {% now "Y" %} District Assembly. MMIS Ghana.</p>
+    </footer>
+</body>
+</html>

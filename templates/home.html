@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %} {# Assuming you might add static files like CSS later for styling the login page #}
+
+{% block title %}Welcome - MMIS Ghana{% endblock %}
+
+{% block page_title %}Welcome to the Municipal Management Information System{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 40px;">
+    <p>This system is designed to help manage municipal operations efficiently.</p>
+    {% if user.is_authenticated %}
+        <p>You are logged in as {{ user.username }}.</p>
+        <p><a href="{% url 'dashboard' %}" style="padding: 10px 20px; background-color: #004488; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a></p>
+        <p><a href="{% url 'logout' %}?next={% url 'home' %}">Logout</a></p>
+    {% else %}
+        <p>Please log in to access the system features.</p>
+        <p><a href="{% url 'login' %}?next={% url 'dashboard' %}" style="padding: 10px 20px; background-color: #004488; color: white; text-decoration: none; border-radius: 5px;">Login</a></p>
+        {# You might add a registration link here if self-registration is allowed, e.g. for a citizen portal later #}
+        {# <p>Don't have an account? <a href="#">Register</a></p> #}
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} - MMIS Ghana{% endblock %}
+
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    {% if employees %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Job Title</th>
+                    <th>Email</th>
+                    <th>Employment Date</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td>{{ emp.employee_id }}</td>
+                    <td>{{ emp.first_name }} {{ emp.last_name }}</td>
+                    <td>{{ emp.job_title }}</td>
+                    <td>{{ emp.email }}</td>
+                    <td>{{ emp.employment_date|date:"Y-m-d" }}</td>
+                    <td><a href="{% url 'hr_payroll:employee-detail' emp.employee_id %}">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No employees found.</p>
+    {% endif %}
+    {# Add link to create new employee if/when that view exists #}
+    {# <p><a href="#">Add New Employee</a></p> #}
+{% endblock %}
